@@ -6,10 +6,10 @@ data.subtype = input.type
 # literals
 data.type = "facebook"
 
-# data parsing and formatting functions
+# date parsing and formatting functions
 data.created = input.created_time.or(env.now.asISO8601()).fromISO8601().asRFC2822()
 
-# capture side-effects in the environemnt object
+# capture side-effects from the environment object
 data.received = env.now.asRFC2822()
 
 # complex ID generation
