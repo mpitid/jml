@@ -44,7 +44,7 @@ case data.subtype of {
 }
 ```
 
-And the output should like something like the following:
+And the output should look something like the following:
 
 ```json
 {
