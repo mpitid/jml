@@ -15,7 +15,36 @@ mvn clean dependency:copy-dependencies package
 java -cp 'target/dependency/*:target/*' prototype.jml.main test.jml sample?.json
 ```
 
-to get the following output:
+The example transformation looks like this:
+
+```yaml
+# simple copying
+data.original = input
+data.subtype = input.type
+
+# literals
+data.type = "facebook"
+
+# date parsing and formatting functions
+data.created = input.created_time.or(env.now.asISO8601()).fromISO8601().asRFC2822()
+
+# capture side-effects from the environment object
+data.received = env.now.asRFC2822()
+
+# complex ID generation
+data.id = data.created.fromRFC2822().uuid(input.type, input.id.or(""), from.id.or(""))
+
+# control flow with pattern matching
+case data.subtype of {
+  "like" =>
+    # rely on the environment for some additional context
+    data.content = input.from.name.concat("-likes-").concat(env.post.id)
+  _ =>
+    data.content = input.message.or(input.picture).or(input.link)
+}
+```
+
+And the output should like something like the following:
 
 ```json
 {
